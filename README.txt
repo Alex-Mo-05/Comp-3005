@@ -9,9 +9,10 @@ This repo demonstrates a PostgreSQL-backed application performing CRUD (Create, 
 - (Optional) pgAdmin for visual verification
 
 ## Setup
+1. **Create a database** (comp3005) in pgAdmin, it should run on localhost on port 5432, user should be set to postgres, password to 12345
+2. **Run the db script** run the db script to populate the database
+3. **Run python file** run the python file in vsc
 
-### 1 Create database and table
-1. **Create a database** (e.g., `school_db`) in psql or pgAdmin.
-2. **Run the schema script**:
-   ```bash
-   psql -h localhost -U your_user -d school_db -f db/schema.sql
+Video link:
+https://youtu.be/eCwd3cj1hG8
+
