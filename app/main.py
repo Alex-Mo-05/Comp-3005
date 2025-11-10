@@ -7,16 +7,8 @@ from psycopg2.extras import RealDictCursor
 from datetime import datetime
 
 
+# This function allows the python script to connect to the database hosted on your local machine
 def get_connection():
-    """
-    Create and return a psycopg2 connection using environment variables.
-    Required env vars:
-      - PGHOST
-      - PGPORT
-      - PGDATABASE
-      - PGUSER
-      - PGPASSWORD
-    """
     try:
         conn = psycopg2.connect(
             host="localhost",
@@ -30,11 +22,8 @@ def get_connection():
         print(f"[ERROR] Failed to connect to database: {e}")
         sys.exit(1)
 
+# This function retrieves all students and displays them
 def getAllStudents(conn):
-    """
-    Retrieve and print all students.
-    Uses RealDictCursor for readable dict output.
-    """
     try:
         with conn.cursor(cursor_factory=RealDictCursor) as cur:
             cur.execute("SELECT student_id, first_name, last_name, email, enrollment_date FROM students ORDER BY student_id;")
@@ -47,13 +36,8 @@ def getAllStudents(conn):
         print(f"[ERROR] getAllStudents failed: {e}")
         return []
 
+# This function adds a student requiring the first_name, last_name, email, and enrollment date parameters
 def addStudent(conn, first_name, last_name, email, enrollment_date=None):
-    """
-    Insert a new student.
-    Params:
-      - first_name (str), last_name (str), email (str), enrollment_date (YYYY-MM-DD or None)
-    Returns: new student_id
-    """
     try:
         with conn.cursor() as cur:
             cur.execute(
@@ -73,12 +57,8 @@ def addStudent(conn, first_name, last_name, email, enrollment_date=None):
         print(f"[ERROR] addStudent failed: {e}")
         return None
 
+# This function updates a students email based on the student id selected, if a non valid id is selected the function will do nothing and return to the main menu
 def updateStudentEmail(conn):
-    """
-    Update a student's email by student_id.
-    Returns True if updated, False otherwise.
-    """
-
     student_id = input("\nWhat is the id the student you want to edit: ")
     with conn.cursor() as cur:
 
@@ -105,13 +85,8 @@ def updateStudentEmail(conn):
             return False
 
 
-
+# This function deletes a student from the database, if a non valid student id is selected the user will be returned to the main menu
 def deleteStudent(conn):
-    """
-    Delete a student by student_id.
-    Returns True if deleted, False otherwise.
-    """
-
     student_id = input("\nWhat is the id the student you want to delete: ")
     with conn.cursor() as cur:
 
@@ -135,8 +110,8 @@ def deleteStudent(conn):
             print("Unable to find student please try again. \n")
             return False
 
+# Control flow of the project, including the main menu prompts
 def main():
-
     conn = get_connection()
     while True:
         action = input("Please select an action: \n1) Show all students \n2) Add a new student\n3) Update student's email\n4) Delete student \n5) Exit Application: \nAction: ")
@@ -181,3 +156,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
